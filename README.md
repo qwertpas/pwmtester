@@ -9,7 +9,7 @@ A static GitHub Pages controller for an ESP32-S3 SuperMini over USB. Based on th
 3. Click **Connect USB** and select the Espressif USB serial port.
 4. Select the GPIOs, pulse width, and both auxiliary levels. Click **Enable outputs**.
 
-Default pins: PWM 12, aux 1 (power) 13 HIGH, aux 2 (ground) 11 LOW. Both auxiliaries support HIGH and LOW. GPIOs 1, 2, 4–18 and 21 are supported; match the board's silkscreen. GPIO0/3 are excluded because of boot strapping, GPIO19/20 carry USB, and flash/PSRAM pins are excluded.
+The servo pin controls follow connector order: Ground (brown/black), Power (red), Signal (orange/yellow). Default pins: signal 12, power 13 HIGH, ground 11 LOW. Both auxiliaries support HIGH and LOW. GPIOs 1, 2, 4–18 and 21 are supported; match the board's silkscreen. GPIO0/3 are excluded because of boot strapping, GPIO19/20 carry USB, and flash/PSRAM pins are excluded.
 
 Aux outputs are 3.3 V logic GPIOs, **not supply rails**. Use the board's 3V3/GND or a suitable external supply for power. Do not connect an external supply to an auxiliary output. The outputs do not provide regulated power or overcurrent protection.
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#151817">
+  <meta name="theme-color" content="#f3f2ed">
   <meta name="description" content="USB PWM tester for ESP32-S3 SuperMini. Select GPIOs, control servo pulses and two digital outputs, and install firmware from your browser.">
   <title>PWM Tester</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -21,7 +21,7 @@
       <div><span class="eyebrow">ESP32-S3 SUPERMINI</span><p class="connection-state"><span id="dot" class="dot"></span><strong id="connection">Disconnected</strong></p></div>
       <button id="connect" class="primary">Connect USB</button>
     </section>
-    <p id="message" role="status" aria-live="polite">Connect your board to control its outputs. First time? Install the firmware below.</p>
+    <p id="message" role="status" aria-live="polite" hidden></p>
     <div class="layout">
       <section class="panel signal" aria-labelledby="signal-title">
         <div class="section-head"><h2 id="signal-title">PWM signal</h2><span class="tag">50 Hz</span></div>
@@ -34,23 +34,34 @@
           <svg viewBox="0 0 660 132" role="img" aria-labelledby="wave-title"><title id="wave-title">Pulse preview: 1500 microseconds in a 20 millisecond period</title><defs><pattern id="grid" width="30" height="25" patternUnits="userSpaceOnUse"><path d="M30 0H0V25" fill="none" stroke="currentColor" stroke-width=".6"/></pattern></defs><rect width="660" height="108" fill="url(#grid)"/><path id="wave" d="M0 83H30V23H75V83H630V23H660"/><text x="0" y="129">0 ms</text><text x="600" y="129">20 ms</text></svg>
           <figcaption><span>Signal preview</span><span id="duty">7.50% duty</span></figcaption>
         </figure>
-        <div class="output-row"><div><strong id="output-state">Outputs off</strong><p id="output-detail">Pins are high impedance.</p></div><button id="enable" class="primary" disabled>Enable outputs</button><button id="stop" class="danger" disabled>Stop</button></div>
+        <div class="output-row"><div><strong id="output-state">Outputs off</strong></div><button id="enable" class="primary" disabled>Enable outputs</button><button id="stop" class="danger" disabled>Stop</button></div>
       </section>
       <section class="panel pins" aria-labelledby="pins-title">
-        <div class="section-head"><h2 id="pins-title">GPIO assignment</h2><span class="tag">3.3 V</span></div>
-        <div class="pin-row"><div><label for="pwm">PWM output</label><small>1000–2000 µs · 50 Hz</small></div><select id="pwm" aria-label="PWM GPIO"></select></div>
-        <div class="pin-row"><div><label for="power">Aux 1 · power</label><small>Digital output</small></div><select id="power" aria-label="Aux 1 GPIO"></select></div>
-        <label class="level" for="power-level">Output level<select id="power-level"><option value="1">HIGH · 3.3 V</option><option value="0">LOW · 0 V</option></select></label>
-        <div class="pin-row"><div><label for="ground">Aux 2 · ground</label><small>Digital output</small></div><select id="ground" aria-label="Aux 2 GPIO"></select></div>
-        <label class="level" for="ground-level">Output level<select id="ground-level"><option value="0">LOW · 0 V</option><option value="1">HIGH · 3.3 V</option></select></label>
+        <div class="section-head"><h2 id="pins-title">Servo pins</h2></div>
+        <div class="servo-pin ground">
+          <span class="wire" aria-hidden="true"></span>
+          <label for="ground">Ground</label>
+          <select id="ground" aria-label="Ground GPIO"></select>
+          <select id="ground-level" aria-label="Ground level"><option value="0">LOW</option><option value="1">HIGH</option></select>
+        </div>
+        <div class="servo-pin power">
+          <span class="wire" aria-hidden="true"></span>
+          <label for="power">Power</label>
+          <select id="power" aria-label="Power GPIO"></select>
+          <select id="power-level" aria-label="Power level"><option value="1">HIGH</option><option value="0">LOW</option></select>
+        </div>
+        <div class="servo-pin signal">
+          <span class="wire" aria-hidden="true"></span>
+          <label for="pwm">Signal</label>
+          <select id="pwm" aria-label="Signal GPIO"></select>
+          <span class="pin-value">PWM</span>
+        </div>
         <p id="pin-error" role="alert" hidden>Choose a different GPIO for each output.</p>
-        <p class="note">Use GPIO numbers printed on the board. USB and boot/flash pins are excluded. Changing a pin stops all outputs.</p>
-        <p class="notice">Aux outputs are GPIO logic, not supply rails. Use board 3V3/GND for power. Never connect an external supply to an aux output.</p>
       </section>
     </div>
-    <section class="panel install" aria-labelledby="install-title"><div><h2 id="install-title">Install firmware</h2><p>Flash PWM Tester over USB, then close the installer and connect above. Reinstalling replaces the firmware on the selected board.</p></div><esp-web-install-button id="installer" manifest="firmware/manifest.json"><button id="install" slot="activate">Install on ESP32-S3</button><span slot="unsupported">Open in desktop Chrome or Edge to install.</span><span slot="not-allowed">Open this site over HTTPS to install.</span></esp-web-install-button></section>
-    <details class="help"><summary>Connection & wiring</summary><ol><li>Plug in an ESP32-S3 SuperMini with a USB data cable. Close other serial monitors.</li><li>Install once, close the installer, then choose <strong>Connect USB</strong> and select the Espressif USB JTAG/serial port.</li><li>Select three different GPIOs, set the pulse and auxiliary levels, then enable outputs. Changes to the pulse or aux levels apply immediately.</li><li>Connect the device’s signal input to the PWM GPIO and use a shared ground. Supply loads from a suitable power source.</li></ol><p>If flashing will not start, hold BOOT, tap RESET, release BOOT, and try again. Tap RESET after installation if needed.</p><p>Outputs switch off when you stop, disconnect, or hide this tab. If communication is lost, firmware disables outputs after 2 seconds. Disabled pins are high impedance.</p></details>
-    <footer><span>USB serial · 115200 baud</span><span>No server or account required</span></footer>
+    <section class="install" aria-label="Firmware installation">
+      <esp-web-install-button id="installer" manifest="firmware/manifest.json"><button id="install" slot="activate">Install firmware</button><span slot="unsupported">Open in desktop Chrome or Edge to install.</span><span slot="not-allowed">Open this site over HTTPS to install.</span></esp-web-install-button>
+    </section>
   </main>
 </body>
 </html>

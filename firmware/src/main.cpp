@@ -31,6 +31,7 @@ void status() {
                   "\"powerLevel\":%d,\"groundLevel\":%d,\"frequency\":50}\n",
                   enabled ? "true" : "false", pwm, powerPin, groundPin,
                   pulse, powerLevel, groundLevel);
+    Serial.flush();
 }
 
 void handle(const char *text) {

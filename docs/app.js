@@ -10,7 +10,8 @@ let sending = false, pending = null, desired = false;
 const supported = 'serial' in navigator && window.isSecureContext;
 
 function message(text, error = false) {
-  $('message').textContent = text;
+  $('message').textContent = error ? text : '';
+  $('message').hidden = !error;
   $('message').classList.toggle('error', error);
 }
 function validPins() {
@@ -27,7 +28,6 @@ function render() {
   $('stop').disabled = !connected || closing;
   $('install').disabled = connected || opening || closing;
   $('output-state').textContent = active ? 'Outputs on' : 'Outputs off';
-  $('output-detail').textContent = active ? 'Board confirmed · 50 Hz' : 'Pins are high impedance.';
 }
 function preview(value) {
   $('pulse').value = value;
