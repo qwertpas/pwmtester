@@ -1,0 +1,15 @@
+{
+  "name": "pwmtester",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild node_modules/esp-web-tools/dist/web/install-button.js --bundle --format=esm --minify --outfile=docs/install.js",
+    "check": "node --check docs/app.js"
+  },
+  "dependencies": {
+    "esp-web-tools": "10.4.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
