@@ -173,7 +173,7 @@ $('pulse').addEventListener('input', () => {
   if (validPins()) void send(settings());
 });
 $('pulse-number').addEventListener('change', () => {
-  const value = Number($('pulse-number').value);
+  const value = $('pulse-number').valueAsNumber;
   if (!$('pulse-number').checkValidity() || !Number.isInteger(value)) {
     $('pulse-number').reportValidity();
     return;
