@@ -2,7 +2,7 @@
 
 # PWM Tester
 
-[Open PWM Tester](https://qwertpas.github.io/pwmtester/) in desktop Chrome or Edge.
+[Open PWM Tester](https://qwertpas.github.io/pwmtester/) in your browser.
 
 Control an ESP32-S3 SuperMini over USB: 50 Hz PWM with 1000–2000 µs pulses and two configurable digital outputs.
 
